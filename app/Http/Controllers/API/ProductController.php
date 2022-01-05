@@ -5,11 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 class ProductController extends Controller
 {
-
     /**
      * @OA\Get(
      *     tags={"Product"},
@@ -31,6 +31,14 @@ class ProductController extends Controller
      *           type="string"
      *      )
      *   ),
+     *     @OA\Parameter(
+     *      name="detail",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
      *     @OA\Response(response="200", description="List Products.")
      * )
      */
@@ -43,9 +51,11 @@ class ProductController extends Controller
     {
         $input = $request->all();
         $name=isset($input["name"])? $input["name"] : "";
-        if(!empty($name))
+        $detail=isset($input["detail"])? $input["detail"] : "";
+
+        if(!empty($name) || !empty($detail))
         {
-            $products = Product::where("name", 'LIKE', "%$name%")->paginate(2);
+            $products = Product::where("detail", "LIKE", "%$detail%")->where("name", "LIKE", "%$name%")->paginate(2);
             return response()->json($products);
         }
         $products = Product::paginate(2);// ::all();
@@ -73,7 +83,7 @@ class ProductController extends Controller
      *          type="string"
      *      )
      *   ),
-     *  @OA\RequestBody(
+     * @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
@@ -124,11 +134,29 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $imageName = uniqid() . '.'.$request->file->extension();
+
+        //$image = $input['image'];
+        //$image = str_replace('data:image/png;base64,', '', $image);
+        //$image = str_replace(' ', '+', $image);
         $path = public_path('images');
+        $imageName = uniqid() . '.' . $request->file->extension();
         $request->file->move($path, $imageName);
 
-        $input['image']=$imageName;
+//        Storage::disk($path)->put($imageName, base64_decode($image));
+
+//        $img = $request->avatar;
+//        $folderPath = "images/users/"; //path location
+//        $image_parts = explode(";base64,", $img);
+//        $image_type_aux = explode("image/", $image_parts[0]);
+//        $image_type = $image_type_aux[1];
+//        $image_base64 = base64_decode($image_parts[1]);
+//        $uniqid = uniqid();
+//        $file = $folderPath . $uniqid . '.'.$image_type;
+//        file_put_contents($file, $image_base64);
+
+//        $request->file->move($path, $imageName);
+//
+        $input['image'] = $imageName;
         $product = Product::create($input);
         return response()->json([
             "success" => true,
@@ -136,7 +164,6 @@ class ProductController extends Controller
             "data" => $product
         ]);
     }
-
 
     /**
      * @OA\Get(

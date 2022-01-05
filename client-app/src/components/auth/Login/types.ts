@@ -4,34 +4,31 @@ export enum AuthActionTypes {
 
 export interface ILoginModel {
     email: string,
-    password: string
+    password: string,
 }
 
-export interface ILoginResponse {
+export interface ILoginResponse{
     access_token: string,
     expires_in: string
 }
-
-export type LoginError = {
-    email: Array<string>, 
-    password: Array<string>, 
-    error: string 
-};
 
 export interface IUser {
     email: string,
     image: string
 }
-
 export interface AuthState {
-    user: null|IUser,
-    isAuth: boolean
+    user: null | IUser,
+    isAuth: boolean,
+}
+export type LoginError = {
+    email: Array<string>,
+    password: Array<string>,
+    error: string
 }
 
 export interface LoginAuthAction {
     type: AuthActionTypes.LOGIN_AUTH,
-    payload: IUser
+    payload: IUser,
 }
-
 
 export type AuthAction = LoginAuthAction;

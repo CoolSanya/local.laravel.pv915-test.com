@@ -1,38 +1,33 @@
-import {ProductActions, ProductsActionTypes, ProductsState} from './types';
+import { ProductAction, ProductActionTypes, ProductState } from "./types";
 
-const initialState : ProductsState = {
+const initialState: ProductState = {
     products: [],
-    last_page: 0
-}
+    last_page: 0,
+};
 
-export const productsReducer = (state = initialState, action: ProductActions) : ProductsState => {
-    switch(action.type) {
-
-        case ProductsActionTypes.FETCH_PRODUCTS:
+export const productReducer = (
+    state = initialState,
+    action: ProductAction
+): ProductState => {
+    switch (action.type) {
+        case ProductActionTypes.PRODUCTS_GET: {
             return {
                 ...state,
-                ...action.payload
+                // products: action.payload.data,
+                // pageCount: action.payload.last_page,
+                ...action.payload,
             };
-
-        case ProductsActionTypes.EDIT_PRODUCT:
-            var product = state.products.filter((value, index, obj) => {
-                return value.id != action.payload.id
+        }
+        case ProductActionTypes.PRODUCT_DELETE: {
+            let tmpList = state.products.filter((v, i, a) => {
+                return v.id != action.payload.id;
             });
             return {
                 ...state,
-                products: product
-            }
-
-        case ProductsActionTypes.DELETE_PRODUCT:
-            var tmpList = state.products.filter((value, index, arr) => {
-                return value.id != action.payload.id
-            });
-            return {
-                ...state,
-                products: tmpList
+                products: tmpList,
             };
+        }
         default:
             return state;
     }
-    
-}
+};

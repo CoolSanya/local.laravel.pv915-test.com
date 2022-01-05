@@ -1,13 +1,17 @@
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 export const validationFields = () => {
-    return Yup.object({
+    return Yup.object().shape({
         email: Yup.string()
-            .email('Не коректно вказана пошта')
-            .required("Вкажіть пошту"),
-        
+            .email()
+            .required('Enter valid email'),
         password: Yup.string()
-            .required('Вкажіть пароль.') 
-            .min(6, 'Пароль має містить мінімум 6 символів.'),
-    });
-};
+        .matches(
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{6,20}\S$/,
+            "Please valid password. One uppercase, one lowercase, one special character and no spaces"
+        )
+        .required(
+            'Password is required'
+        ),
+});   
+}

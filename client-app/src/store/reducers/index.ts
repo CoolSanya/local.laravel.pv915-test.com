@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import { authReducer } from "../../components/auth/Login/reducer";
-import { productsReducer } from "../../components/products/reducer";
+import { authReducer } from "../../components/auth/login/reducer";
+import {productReducer} from "../../components/products/reducer"
 
 export const rootReducer = combineReducers({
     auth: authReducer,
-    product: productsReducer
+    product: productReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

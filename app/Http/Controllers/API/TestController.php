@@ -12,7 +12,6 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     /**
      * @OA\Get(
      *     path="/api/test",
@@ -21,13 +20,13 @@ class TestController extends Controller
      */
     public function index()
     {
-        return response(["data"=>"Hello Peter"]);
+        return response(["data" => "Hello Peter"]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -38,7 +37,7 @@ class TestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -49,8 +48,8 @@ class TestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -61,7 +60,7 @@ class TestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
